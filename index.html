@@ -478,6 +478,99 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* help / details block */
+  .help {
+    background: rgba(6, 182, 212, 0.06);
+    border: 1px solid rgba(6, 182, 212, 0.18);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .help summary {
+    cursor: pointer;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+  }
+  .help summary::-webkit-details-marker { display: none; }
+  .help summary::before {
+    content: 'ⓘ';
+    color: var(--accent-2);
+    font-size: 16px;
+  }
+  .help summary::after {
+    content: '›';
+    margin-left: auto;
+    font-size: 20px;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+  }
+  .help[open] summary::after { transform: rotate(90deg); }
+  .help-content {
+    padding: 4px 16px 16px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .help-content p { margin-bottom: 6px; }
+  .help-content p:last-child { margin-bottom: 0; }
+  .help-content strong { color: var(--text); }
+  .help-content em { color: var(--accent-2); font-style: normal; font-weight: 600; }
+
+  /* specialty select */
+  .select-wrap {
+    position: relative;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    transition: border-color 0.2s;
+  }
+  .select-wrap:focus-within { border-color: var(--accent); }
+  .select-native {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 44px 14px 16px;
+    outline: none;
+    font-family: inherit;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .select-native option { background: var(--bg-2); color: var(--text); }
+  .select-native optgroup { background: var(--bg-1); color: var(--text-dim); font-weight: 700; }
+  .select-chevron {
+    position: absolute;
+    right: 14px; top: 50%;
+    transform: translateY(-50%);
+    width: 18px; height: 18px;
+    color: var(--text-dim);
+    pointer-events: none;
+  }
+  .spec-meta {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text-dim);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .spec-meta span {
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+  }
+
   .amount.flash { animation: flashPop 0.4s ease-out; }
   @keyframes flashPop {
     0% { transform: scale(1); }
@@ -500,25 +593,38 @@
 
   <div class="grid">
     <div class="card">
+      <!-- Spécialité -->
+      <div class="section-title" style="margin-top:0;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7z"/></svg>
+        Spécialité (DES)
+      </div>
+      <div class="select-wrap">
+        <select id="specialty" class="select-native"></select>
+        <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="spec-meta" id="specMeta"></div>
+
       <!-- Année d'internat -->
       <div class="section-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
         Année d'internat
       </div>
-      <div class="years" id="years">
-        <button class="year-btn active" data-year="1"><span>1<sup>re</sup></span><small>Phase socle</small></button>
-        <button class="year-btn" data-year="2"><span>2<sup>e</sup></span><small>Phase socle</small></button>
-        <button class="year-btn" data-year="3"><span>3<sup>e</sup></span><small>Approfondissement</small></button>
-        <button class="year-btn" data-year="4"><span>4<sup>e</sup></span><small>Consolidation</small></button>
-        <button class="year-btn" data-year="5"><span>5<sup>e</sup></span><small>Docteur Junior</small></button>
-        <button class="year-btn" data-year="6"><span>6<sup>e</sup></span><small>Docteur Junior</small></button>
-      </div>
+      <div class="years" id="years"></div>
 
       <!-- Gardes -->
       <div class="section-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         Gardes du mois
       </div>
+      <details class="help">
+        <summary>Comment compter ses gardes ?</summary>
+        <div class="help-content">
+          <p><strong>Semaine (lundi au vendredi)</strong> — une nuit travaillée = <em>1 garde</em> (234,80€ brut).</p>
+          <p><strong>Samedi</strong> — l'après-midi est une <em>demi-garde</em> (128,43€) et la nuit une <em>garde complète</em> (256,86€), soit <strong>1,5 garde</strong> au total si vous êtes là samedi après-midi + nuit.</p>
+          <p><strong>Dimanche / jour férié</strong> — journée et nuit sont considérées comme des gardes de week-end (256,86€).</p>
+          <p>Saisissez simplement le total de chaque type. Exemple : un samedi complet = 1 « WE » + 1 « ½ WE ».</p>
+        </div>
+      </details>
       <div class="inputs-grid">
         <div class="input-group">
           <label>Garde nuit semaine <span class="hint">234,80€</span></label>
@@ -695,14 +801,94 @@
 
 <script>
   // Barèmes 2026 (brut)
-  const YEARS = {
-    1: { base: 1592.80, sujetion: 435.18, resp: 0, autonomie: 0, label: '1re année' },
-    2: { base: 1765.27, sujetion: 435.18, resp: 0, autonomie: 0, label: '2e année' },
-    3: { base: 2367.36, sujetion: 0, resp: 0, autonomie: 0, label: '3e année' },
-    4: { base: 2369.20, sujetion: 0, resp: 179.51, autonomie: 0, label: '4e année' },
-    5: { base: 2370.69, sujetion: 0, resp: 356.16, autonomie: 416.67, label: '5e année (DJ)' },
-    6: { base: 2374.62, sujetion: 0, resp: 356.16, autonomie: 500.00, label: '6e année (DJ)' }
+  // Émoluments mensuels par année d'internat (source ISNI, arrêté 8 juillet 2022)
+  const YEAR_BASE = {
+    1: 1592.80,
+    2: 1765.27,
+    3: 2367.36,
+    4: 2369.20,
+    5: 2370.69,
+    6: 2374.62
   };
+
+  // Spécialités : durée totale, fin de la phase socle, début du statut Docteur Junior
+  const SPECIALTIES = [
+    { key: 'mg', label: 'Médecine générale', group: 'Médecine générale', years: 4, soclEnd: 1, djStart: 4 },
+
+    // 4 ans — spécialités médicales
+    { key: 'allergo',   label: 'Allergologie',                       group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'dermato',   label: 'Dermatologie et vénéréologie',       group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'endocrino', label: 'Endocrinologie-diabétologie',        group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'genetique', label: 'Génétique médicale',                 group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'geriatrie', label: 'Gériatrie',                          group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'gyn_med',   label: 'Gynécologie médicale',               group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'urg',       label: "Médecine d'urgence",                 group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'nucleaire', label: 'Médecine nucléaire',                 group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'mpr',       label: 'Médecine physique et réadaptation',  group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'travail',   label: 'Médecine du travail',                group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'vasc_med',  label: 'Médecine vasculaire',                group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'neuro',     label: 'Neurologie',                         group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'rhumato',   label: 'Rhumatologie',                       group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+    { key: 'sante_pub', label: 'Santé publique',                     group: 'Spécialités médicales (4 ans)', years: 4, soclEnd: 1, djStart: 4 },
+
+    // 5 ans — spécialités médicales
+    { key: 'anapath',   label: 'Anatomie et cytologie pathologiques', group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'anesth',    label: 'Anesthésie-réanimation',              group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'hemato',    label: 'Hématologie',                         group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'hge',       label: 'Hépato-gastro-entérologie',           group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'infectio',  label: 'Maladies infectieuses et tropicales', group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'cardio',    label: 'Médecine cardiovasculaire',           group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'reanim',    label: 'Médecine intensive-réanimation',      group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'interne',   label: 'Médecine interne et immuno clinique', group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'legale',    label: 'Médecine légale et expertises',       group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'nephro',    label: 'Néphrologie',                         group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'onco',      label: 'Oncologie',                           group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'pediatrie', label: 'Pédiatrie',                           group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'pneumo',    label: 'Pneumologie',                         group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'psy',       label: 'Psychiatrie',                         group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+    { key: 'radio',     label: 'Radiologie et imagerie médicale',     group: 'Spécialités médicales (5 ans)', years: 5, soclEnd: 1, djStart: 5 },
+
+    // Biologie
+    { key: 'bio',       label: 'Biologie médicale', group: 'Biologie médicale', years: 4, soclEnd: 1, djStart: 4 },
+
+    // 6 ans — chirurgie
+    { key: 'chir_maxillo', label: 'Chirurgie maxillo-faciale',               group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'chir_ortho',   label: 'Chirurgie orthopédique et traumatologique', group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'chir_ped',     label: 'Chirurgie pédiatrique',                   group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'chir_plast',   label: 'Chirurgie plastique et reconstructrice',  group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'chir_thor',    label: 'Chirurgie thoracique et cardiovasculaire',group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'chir_vasc',    label: 'Chirurgie vasculaire',                    group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'chir_visc',    label: 'Chirurgie viscérale et digestive',        group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'gyn_obs',      label: 'Gynécologie-obstétrique',                 group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'neurochir',    label: 'Neurochirurgie',                          group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'ophtalmo',     label: 'Ophtalmologie',                           group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'orl',          label: 'ORL et chirurgie cervico-faciale',        group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'uro',          label: 'Urologie',                                group: 'Spécialités chirurgicales (6 ans)', years: 6, soclEnd: 2, djStart: 5 },
+    { key: 'chir_orale',   label: 'Chirurgie orale (DESCO)',                 group: 'Autre', years: 4, soclEnd: 1, djStart: 4 }
+  ];
+
+  function getSpec(key) { return SPECIALTIES.find(s => s.key === key) || SPECIALTIES[0]; }
+
+  function phaseLabel(spec, year) {
+    if (year <= spec.soclEnd) return 'Phase socle';
+    if (year < spec.djStart) return 'Approfondissement';
+    const djIdx = year - spec.djStart;
+    return djIdx === 0 ? 'Docteur Junior' : 'Docteur Junior (2e)';
+  }
+
+  function ordinal(n) {
+    return n === 1 ? '1<sup>re</sup>' : n + '<sup>e</sup>';
+  }
+
+  function yearSalaryData(year, spec) {
+    const base = YEAR_BASE[year] || YEAR_BASE[6];
+    const sujetion = year <= 2 ? 435.18 : 0;
+    const resp = year === 4 ? 179.51 : (year >= 5 ? 356.16 : 0);
+    const isDJ = year >= spec.djStart;
+    const djIdx = isDJ ? (year - spec.djStart) : -1;
+    const autonomie = isDJ ? (djIdx === 0 ? 416.67 : 500.00) : 0;
+    return { base, sujetion, resp, autonomie, isDJ };
+  }
 
   const GARDES = {
     gardeSemaine: 234.80,
@@ -727,6 +913,7 @@
   const COTIS_RATE = 0.22;
 
   const state = {
+    spec: 'mg',
     year: 1,
     gardeSemaine: 4,
     gardeWE: 1,
@@ -740,17 +927,85 @@
     period: 'mois'
   };
 
+  function buildSpecialtyOptions() {
+    const sel = $('specialty');
+    const groups = {};
+    SPECIALTIES.forEach(s => {
+      (groups[s.group] = groups[s.group] || []).push(s);
+    });
+    const order = [
+      'Médecine générale',
+      'Spécialités médicales (4 ans)',
+      'Spécialités médicales (5 ans)',
+      'Biologie médicale',
+      'Spécialités chirurgicales (6 ans)',
+      'Autre'
+    ];
+    sel.innerHTML = '';
+    order.forEach(g => {
+      if (!groups[g]) return;
+      const og = document.createElement('optgroup');
+      og.label = g;
+      groups[g].forEach(s => {
+        const o = document.createElement('option');
+        o.value = s.key;
+        o.textContent = s.label;
+        og.appendChild(o);
+      });
+      sel.appendChild(og);
+    });
+    sel.value = state.spec;
+  }
+
+  function buildYearButtons() {
+    const spec = getSpec(state.spec);
+    const c = $('years');
+    c.innerHTML = '';
+    for (let y = 1; y <= spec.years; y++) {
+      const btn = document.createElement('button');
+      btn.className = 'year-btn' + (y === state.year ? ' active' : '');
+      btn.dataset.year = y;
+      btn.innerHTML = `<span>${ordinal(y)}</span><small>${phaseLabel(spec, y)}</small>`;
+      btn.addEventListener('click', () => {
+        state.year = y;
+        document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        render();
+      });
+      c.appendChild(btn);
+    }
+    // Adjust grid cols based on year count
+    c.style.gridTemplateColumns = `repeat(${Math.min(spec.years, 6)}, 1fr)`;
+  }
+
+  function renderSpecMeta() {
+    const spec = getSpec(state.spec);
+    const m = $('specMeta');
+    const djRange = spec.years > spec.djStart
+      ? `années ${spec.djStart}-${spec.years}`
+      : `année ${spec.djStart}`;
+    m.innerHTML = `
+      <span>Durée : ${spec.years} ans</span>
+      <span>Phase socle : ${spec.soclEnd === 1 ? 'année 1' : 'années 1-2'}</span>
+      <span>Docteur Junior : ${djRange}</span>
+    `;
+    // MG-only: SASPAS toggle
+    document.querySelector('[data-toggle="saspas"]').style.display = spec.key === 'mg' ? 'flex' : 'none';
+    if (spec.key !== 'mg') { state.saspas = false; $('saspasToggle').classList.remove('on'); }
+  }
+
   const $ = (id) => document.getElementById(id);
   const fmt = (n) => new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.round(n));
   const fmt2 = (n) => new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
 
   function compute() {
-    const y = YEARS[state.year];
+    const spec = getSpec(state.spec);
+    const y = yearSalaryData(state.year, spec);
     const base = y.base;
     const sujetion = y.sujetion;
     const resp = y.resp;
     const autonomie = y.autonomie;
-    const saspas = state.saspas && (state.year >= 3) ? SASPAS_PRIME : 0;
+    const saspas = state.saspas && spec.key === 'mg' && state.year >= 3 ? SASPAS_PRIME : 0;
 
     const gardes =
       state.gardeSemaine * GARDES.gardeSemaine +
@@ -812,14 +1067,15 @@
     $('rowCotis').style.display = isNet ? 'flex' : 'none';
   }
 
-  // Year selector
-  document.querySelectorAll('.year-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      state.year = parseInt(btn.dataset.year);
-      render();
-    });
+  // Specialty selector
+  buildSpecialtyOptions();
+  $('specialty').addEventListener('change', (e) => {
+    state.spec = e.target.value;
+    const spec = getSpec(state.spec);
+    if (state.year > spec.years) state.year = spec.years;
+    buildYearButtons();
+    renderSpecMeta();
+    render();
   });
 
   // Number inputs
@@ -886,6 +1142,8 @@
     });
   });
 
+  buildYearButtons();
+  renderSpecMeta();
   render();
 </script>
 </body>
