@@ -135,15 +135,11 @@
   }
 
   /* --- Layout --- */
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 420px;
-    gap: clamp(16px, 2.5vw, 28px);
-    align-items: start;
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(18px, 3vw, 28px);
     animation: fadeUp 0.8s ease-out 0.15s backwards;
-  }
-  @media (max-width: 960px) {
-    .grid { grid-template-columns: 1fr; }
   }
 
   .card {
@@ -570,18 +566,46 @@
 
   /* --- Result card --- */
   .result-card {
-    background: linear-gradient(180deg, rgba(124, 58, 237, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
-    border: 1px solid rgba(124, 58, 237, 0.28);
-    position: sticky;
-    top: 20px;
-    align-self: start;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    box-shadow: 0 12px 50px rgba(124, 58, 237, 0.18);
   }
-  @media (max-width: 960px) {
-    .result-card {
-      position: relative;
-      top: 0;
-    }
+  .result-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
   }
+  .result-head .section-title { margin: 0 !important; }
+  .result-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .result-controls .view-switch,
+  .result-controls .tabs { margin-bottom: 0; }
+
+  .result-body {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) minmax(0, 1.4fr);
+    gap: clamp(20px, 4vw, 40px);
+    align-items: start;
+  }
+  @media (max-width: 720px) {
+    .result-body { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  .result-hero {
+    padding: clamp(18px, 3vw, 28px);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+  .result-hero .big-number { justify-content: center; margin-top: 8px; }
+  .result-hero .sub-amount { text-align: center; }
 
   .view-switch {
     display: flex;
@@ -642,9 +666,10 @@
     align-items: baseline;
     gap: 8px;
     flex-wrap: wrap;
+    justify-content: center;
   }
   .big-number .amount {
-    font-size: clamp(36px, 9vw, 54px);
+    font-size: clamp(44px, 9vw, 68px);
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1;
@@ -665,9 +690,18 @@
   .sub-amount { font-size: 13px; color: var(--text-dim); font-weight: 500; }
 
   .breakdown {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid var(--glass-border);
+    padding: clamp(18px, 3vw, 24px);
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+  }
+  .breakdown-title {
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    margin-bottom: 8px;
   }
   .breakdown-row {
     display: flex;
@@ -880,8 +914,8 @@
     <p class="subtitle">Estimez votre rémunération mensuelle selon votre spécialité, votre année d'internat, vos gardes et astreintes. Tarifs actualisés 2026.</p>
   </header>
 
-  <div class="grid">
-    <!-- LEFT: form -->
+  <div class="stack">
+    <!-- Form -->
     <div class="card">
 
       <!-- Spécialité -->
@@ -1066,40 +1100,48 @@
       </div>
     </div>
 
-    <!-- RIGHT: result -->
+    <!-- Result -->
     <div class="card result-card">
-      <div class="section-title" style="margin-top:0;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        Votre rémunération
+      <div class="result-head">
+        <div class="section-title" style="margin-top:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Votre rémunération
+        </div>
+        <div class="result-controls">
+          <div class="view-switch">
+            <button class="active" data-view="net">Net</button>
+            <button data-view="brut">Brut</button>
+          </div>
+          <div class="tabs">
+            <button class="tab active" data-period="mois">Par mois</button>
+            <button class="tab" data-period="an">Par an</button>
+          </div>
+        </div>
       </div>
 
-      <div class="view-switch">
-        <button class="active" data-view="net">Net</button>
-        <button data-view="brut">Brut</button>
-      </div>
-      <div class="tabs">
-        <button class="tab active" data-period="mois">Par mois</button>
-        <button class="tab" data-period="an">Par an</button>
-      </div>
+      <div class="result-body">
+        <div class="result-hero">
+          <div class="big-number">
+            <span class="amount" id="mainAmount">0</span>
+            <span class="currency">€</span>
+            <span class="period" id="periodLabel">/ mois</span>
+          </div>
+          <div class="sub-amount" id="subAmount">— brut</div>
+        </div>
 
-      <div class="big-number">
-        <span class="amount" id="mainAmount">0</span>
-        <span class="currency">€</span>
-        <span class="period" id="periodLabel">/ mois</span>
-      </div>
-      <div class="sub-amount" id="subAmount">— brut</div>
-
-      <div class="breakdown">
-        <div class="breakdown-row"><span class="label">Émoluments de base</span><span class="value" id="valBase">—</span></div>
-        <div class="breakdown-row" id="rowSujetion"><span class="label">Prime de sujétion</span><span class="value" id="valSujetion">—</span></div>
-        <div class="breakdown-row" id="rowResponsabilite"><span class="label">Prime de responsabilité</span><span class="value" id="valResponsabilite">—</span></div>
-        <div class="breakdown-row" id="rowAutonomie"><span class="label">Prime d'autonomie (DJ)</span><span class="value" id="valAutonomie">—</span></div>
-        <div class="breakdown-row" id="rowSaspas"><span class="label">Prime SASPAS</span><span class="value" id="valSaspas">—</span></div>
-        <div class="breakdown-row"><span class="label">Gardes</span><span class="value" id="valGardes">—</span></div>
-        <div class="breakdown-row"><span class="label">Astreintes</span><span class="value" id="valAstreintes">—</span></div>
-        <div class="breakdown-row"><span class="label">Avantages en nature</span><span class="value" id="valNature">—</span></div>
-        <div class="breakdown-row negative" id="rowCotis"><span class="label">Cotisations (≈22%)</span><span class="value" id="valCotis">—</span></div>
-        <div class="breakdown-row total"><span class="label">Total</span><span class="value" id="valTotal">—</span></div>
+        <div class="breakdown">
+          <div class="breakdown-title">Détail</div>
+          <div class="breakdown-row"><span class="label">Émoluments de base</span><span class="value" id="valBase">—</span></div>
+          <div class="breakdown-row" id="rowSujetion"><span class="label">Prime de sujétion</span><span class="value" id="valSujetion">—</span></div>
+          <div class="breakdown-row" id="rowResponsabilite"><span class="label">Prime de responsabilité</span><span class="value" id="valResponsabilite">—</span></div>
+          <div class="breakdown-row" id="rowAutonomie"><span class="label">Prime d'autonomie (DJ)</span><span class="value" id="valAutonomie">—</span></div>
+          <div class="breakdown-row" id="rowSaspas"><span class="label">Prime SASPAS</span><span class="value" id="valSaspas">—</span></div>
+          <div class="breakdown-row"><span class="label">Gardes</span><span class="value" id="valGardes">—</span></div>
+          <div class="breakdown-row"><span class="label">Astreintes</span><span class="value" id="valAstreintes">—</span></div>
+          <div class="breakdown-row"><span class="label">Avantages en nature</span><span class="value" id="valNature">—</span></div>
+          <div class="breakdown-row negative" id="rowCotis"><span class="label">Cotisations (≈22%)</span><span class="value" id="valCotis">—</span></div>
+          <div class="breakdown-row total"><span class="label">Total</span><span class="value" id="valTotal">—</span></div>
+        </div>
       </div>
 
       <div class="info-box">
