@@ -221,9 +221,13 @@
   .years {
     display: grid;
     gap: 8px;
+    grid-auto-rows: 1fr;
+  }
+  @media (max-width: 560px) {
+    .years { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
   }
   .year-btn {
-    padding: 14px 8px;
+    padding: 12px 6px;
     background: var(--surface);
     border: 1.5px solid var(--border);
     border-radius: var(--radius-sm);
@@ -235,16 +239,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 4px;
     font-family: inherit;
-    min-height: 66px;
+    min-height: 64px;
+    text-align: center;
   }
   .year-btn small {
-    font-size: 10.5px;
+    font-size: 10px;
     font-weight: 600;
     color: var(--text-3);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
+    line-height: 1.15;
   }
   .year-btn:hover:not(.active) {
     border-color: var(--primary);
@@ -1228,7 +1235,7 @@
     const spec = getSpec(state.spec);
     const c = $('years');
     c.innerHTML = '';
-    c.style.gridTemplateColumns = `repeat(${Math.min(spec.years, 6)}, 1fr)`;
+    c.style.gridTemplateColumns = `repeat(${Math.min(spec.years, 6)}, minmax(0, 1fr))`;
     for (let y = 1; y <= spec.years; y++) {
       const btn = document.createElement('button');
       btn.className = 'year-btn' + (y === state.year ? ' active' : '');
