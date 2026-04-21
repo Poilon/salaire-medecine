@@ -3,37 +3,34 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#0370c3" />
+<meta name="theme-color" content="#0f0c29" />
 <title>Simulateur de salaire — Interne en médecine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --bg: #f5f7fb;
-    --bg-accent: #eaf2fa;
-    --surface: #ffffff;
-    --surface-alt: #f9fafc;
-    --border: #e4e8ee;
-    --border-strong: #cdd5df;
-    --text: #0f1e35;
-    --text-2: #475569;
-    --text-3: #94a3b8;
-    --primary: #0370c3;
-    --primary-dark: #025a9e;
-    --primary-soft: #e7f2fa;
-    --primary-softer: #f3f9fd;
-    --teal: #0aa59b;
+    --bg-1: #0f0c29;
+    --bg-2: #1a1a3e;
+    --bg-3: #24243e;
+    --accent: #7c3aed;
+    --accent-soft: #a78bfa;
+    --accent-2: #06b6d4;
+    --accent-3: #ec4899;
+    --text: #f1f5f9;
+    --text-dim: #94a3b8;
+    --text-mid: #cbd5e1;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-strong: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-border-strong: rgba(255, 255, 255, 0.16);
     --success: #10b981;
     --warning: #f59e0b;
-    --shadow-sm: 0 1px 2px rgba(15, 30, 53, 0.05);
-    --shadow-md: 0 4px 12px rgba(15, 30, 53, 0.06), 0 1px 3px rgba(15, 30, 53, 0.04);
-    --shadow-lg: 0 12px 32px rgba(15, 30, 53, 0.08), 0 2px 8px rgba(15, 30, 53, 0.04);
     --radius-sm: 10px;
     --radius: 14px;
-    --radius-lg: 20px;
+    --radius-lg: 22px;
   }
 
   html {
@@ -43,71 +40,96 @@
 
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg);
     color: var(--text);
-    line-height: 1.5;
     min-height: 100vh;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background-image:
-      radial-gradient(circle at 10% 0%, rgba(3, 112, 195, 0.08) 0%, transparent 35%),
-      radial-gradient(circle at 90% 0%, rgba(10, 165, 155, 0.06) 0%, transparent 40%);
+    overflow-x: hidden;
+    background:
+      radial-gradient(ellipse at top left, rgba(124, 58, 237, 0.28) 0%, transparent 55%),
+      radial-gradient(ellipse at top right, rgba(6, 182, 212, 0.2) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom, rgba(236, 72, 153, 0.15) 0%, transparent 65%),
+      linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 50%, var(--bg-3) 100%);
     background-attachment: fixed;
   }
 
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+    animation: float 22s ease-in-out infinite;
+  }
+  .blob-1 { width: 480px; height: 480px; background: var(--accent); top: -180px; left: -180px; }
+  .blob-2 { width: 380px; height: 380px; background: var(--accent-2); top: 30%; right: -140px; animation-delay: -6s; }
+  .blob-3 { width: 420px; height: 420px; background: var(--accent-3); bottom: -180px; left: 30%; animation-delay: -12s; }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(40px, -50px) scale(1.08); }
+    66% { transform: translate(-30px, 30px) scale(0.96); }
+  }
+
   .container {
-    max-width: 1200px;
+    position: relative;
+    z-index: 1;
+    max-width: 1240px;
     margin: 0 auto;
-    padding: clamp(20px, 4vw, 48px) clamp(16px, 4vw, 32px) 80px;
+    padding: clamp(24px, 4vw, 56px) clamp(14px, 4vw, 32px) 80px;
   }
 
   /* --- Header --- */
   header {
     text-align: center;
-    margin-bottom: clamp(28px, 5vw, 44px);
+    margin-bottom: clamp(28px, 5vw, 48px);
+    animation: fadeUp 0.7s ease-out;
   }
 
   .badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    padding: 7px 16px;
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
     border-radius: 999px;
     font-size: 12.5px;
-    font-weight: 600;
-    color: var(--text-2);
-    box-shadow: var(--shadow-sm);
-    margin-bottom: 18px;
+    font-weight: 500;
+    color: var(--text-mid);
+    margin-bottom: 20px;
   }
   .badge::before {
     content: '';
     width: 7px; height: 7px;
     background: var(--success);
     border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+    box-shadow: 0 0 10px var(--success);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(1.25); }
   }
 
   h1 {
-    font-size: clamp(28px, 5.5vw, 44px);
+    font-size: clamp(30px, 6vw, 58px);
     font-weight: 800;
-    letter-spacing: -0.025em;
-    line-height: 1.1;
-    color: var(--text);
-    margin-bottom: 12px;
-  }
-  h1 .accent {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--teal) 100%);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #67e8f9 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .subtitle {
-    font-size: clamp(14px, 2.5vw, 17px);
-    color: var(--text-2);
-    max-width: 620px;
+    font-size: clamp(14px, 2vw, 17px);
+    color: var(--text-dim);
+    max-width: 640px;
     margin: 0 auto;
     line-height: 1.55;
   }
@@ -115,21 +137,23 @@
   /* --- Layout --- */
   .grid {
     display: grid;
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: 1fr 420px;
     gap: clamp(16px, 2.5vw, 28px);
     align-items: start;
+    animation: fadeUp 0.8s ease-out 0.15s backwards;
   }
-
   @media (max-width: 960px) {
     .grid { grid-template-columns: 1fr; }
   }
 
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--glass);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
-    padding: clamp(20px, 3vw, 32px);
-    box-shadow: var(--shadow-md);
+    padding: clamp(18px, 3vw, 32px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
   }
 
   /* --- Section titles --- */
@@ -141,40 +165,40 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--text-2);
+    color: var(--text-dim);
     margin-bottom: 14px;
   }
-  .section-title:not(:first-child) { margin-top: clamp(24px, 3.5vw, 36px); }
+  .section-title:not(:first-child) { margin-top: clamp(22px, 3.5vw, 34px); }
   .section-title svg {
     width: 16px; height: 16px;
-    color: var(--primary);
+    color: var(--accent-soft);
     flex-shrink: 0;
   }
 
   .hint-top {
-    font-size: 13.5px;
-    color: var(--text-2);
-    background: var(--primary-softer);
-    border: 1px solid var(--primary-soft);
-    border-left: 3px solid var(--primary);
+    font-size: 13px;
+    color: var(--text-mid);
+    background: rgba(124, 58, 237, 0.1);
+    border: 1px solid rgba(124, 58, 237, 0.22);
+    border-left: 3px solid var(--accent);
     padding: 10px 14px;
     border-radius: var(--radius-sm);
     margin-bottom: 14px;
     line-height: 1.5;
   }
-  .hint-top strong { color: var(--primary-dark); }
+  .hint-top strong { color: #fff; }
 
   /* --- Specialty select --- */
   .select-wrap {
     position: relative;
-    background: var(--surface-alt);
-    border: 1.5px solid var(--border);
+    background: rgba(0, 0, 0, 0.25);
+    border: 1.5px solid var(--glass-border);
     border-radius: var(--radius-sm);
     transition: border-color 0.15s, box-shadow 0.15s;
   }
   .select-wrap:focus-within {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px var(--primary-soft);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
   }
   .select-native {
     width: 100%;
@@ -183,37 +207,37 @@
     color: var(--text);
     font-size: 15px;
     font-weight: 600;
-    padding: 14px 44px 14px 16px;
+    padding: 13px 44px 13px 16px;
     outline: none;
     font-family: inherit;
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
   }
-  .select-native option { color: var(--text); }
-  .select-native optgroup { color: var(--text-2); font-weight: 700; }
+  .select-native option { background: #1a1a3e; color: var(--text); }
+  .select-native optgroup { background: #0f0c29; color: var(--text-dim); font-weight: 700; }
   .select-chevron {
     position: absolute;
     right: 14px; top: 50%;
     transform: translateY(-50%);
     width: 18px; height: 18px;
-    color: var(--text-2);
+    color: var(--text-dim);
     pointer-events: none;
   }
 
   .spec-meta {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
-    margin-top: 12px;
+    margin-top: 10px;
   }
   .spec-meta span {
-    padding: 5px 11px;
-    background: var(--primary-softer);
-    color: var(--primary-dark);
-    border: 1px solid var(--primary-soft);
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-mid);
+    border: 1px solid var(--glass-border);
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
   }
 
@@ -228,14 +252,14 @@
   }
   .year-btn {
     padding: 12px 6px;
-    background: var(--surface);
-    border: 1.5px solid var(--border);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1.5px solid var(--glass-border);
     border-radius: var(--radius-sm);
     color: var(--text);
-    font-size: 15px;
+    font-size: 14.5px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.18s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -244,24 +268,24 @@
     font-family: inherit;
     min-height: 64px;
     text-align: center;
+    -webkit-tap-highlight-color: transparent;
   }
   .year-btn small {
     font-size: 10px;
     font-weight: 600;
-    color: var(--text-3);
+    color: var(--text-dim);
     text-transform: uppercase;
     letter-spacing: 0.03em;
     line-height: 1.15;
   }
   .year-btn:hover:not(.active) {
-    border-color: var(--primary);
-    background: var(--primary-softer);
+    background: rgba(255, 255, 255, 0.07);
+    transform: translateY(-1px);
   }
   .year-btn.active {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    border-color: var(--primary-dark);
-    color: white;
-    box-shadow: 0 6px 16px rgba(3, 112, 195, 0.25);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-3) 100%);
+    border-color: transparent;
+    box-shadow: 0 8px 22px rgba(124, 58, 237, 0.4);
   }
   .year-btn.active small { color: rgba(255, 255, 255, 0.82); }
 
@@ -269,23 +293,23 @@
   .garde-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
   @media (max-width: 720px) {
     .garde-cards { grid-template-columns: 1fr; }
   }
 
   .garde-card {
-    background: var(--surface-alt);
-    border: 1.5px solid var(--border);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1.5px solid var(--glass-border);
     border-radius: var(--radius);
-    padding: 16px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    transition: border-color 0.15s, transform 0.15s;
+    transition: border-color 0.15s;
   }
-  .garde-card:hover { border-color: var(--border-strong); }
+  .garde-card:hover { border-color: var(--glass-border-strong); }
 
   .garde-head {
     display: flex;
@@ -294,15 +318,16 @@
   }
   .garde-icon {
     width: 38px; height: 38px;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(6, 182, 212, 0.12));
+    border: 1px solid var(--glass-border);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    color: var(--accent-soft);
     flex-shrink: 0;
   }
+  .garde-icon svg { width: 20px; height: 20px; }
   .garde-info { flex: 1; min-width: 0; }
   .garde-title {
     font-size: 14px;
@@ -311,54 +336,68 @@
     line-height: 1.2;
   }
   .garde-sub {
-    font-size: 12px;
-    color: var(--text-2);
+    font-size: 11.5px;
+    color: var(--text-dim);
     margin-top: 3px;
-    line-height: 1.3;
+    line-height: 1.35;
   }
   .garde-foot {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 8px 12px;
-    background: var(--primary-softer);
-    border: 1px solid var(--primary-soft);
+    background: rgba(124, 58, 237, 0.1);
+    border: 1px solid rgba(124, 58, 237, 0.2);
     border-radius: 8px;
   }
   .garde-label {
     font-size: 12px;
-    color: var(--text-2);
+    color: var(--text-dim);
     font-weight: 600;
   }
   .garde-price {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 800;
-    color: var(--primary-dark);
+    color: var(--accent-soft);
     white-space: nowrap;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
   }
-
-  .help-content em {
-    color: var(--primary-dark);
-    font-style: normal;
+  .garde-price .tag {
+    font-size: 10px;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(124, 58, 237, 0.25);
+    color: #e9d5ff;
+  }
+  .garde-price.is-brut .tag {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fcd34d;
   }
 
   /* --- Number input --- */
   .number-input {
     display: flex;
     align-items: stretch;
-    background: var(--surface);
-    border: 1.5px solid var(--border);
+    background: rgba(0, 0, 0, 0.3);
+    border: 1.5px solid var(--glass-border);
     border-radius: var(--radius-sm);
     overflow: hidden;
     height: 44px;
   }
-  .number-input:focus-within { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft); }
+  .number-input:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
+  }
   .number-input button {
     width: 44px;
-    background: var(--surface-alt);
+    background: transparent;
     border: none;
-    color: var(--primary);
+    color: var(--accent-soft);
     font-size: 20px;
     font-weight: 700;
     cursor: pointer;
@@ -366,8 +405,8 @@
     font-family: inherit;
     -webkit-tap-highlight-color: transparent;
   }
-  .number-input button:hover { background: var(--primary-soft); }
-  .number-input button:active { background: var(--primary); color: white; }
+  .number-input button:hover { background: rgba(124, 58, 237, 0.15); }
+  .number-input button:active { background: var(--accent); color: white; }
   .number-input input {
     flex: 1;
     min-width: 0;
@@ -408,24 +447,24 @@
   }
   .input-group label .hint {
     font-size: 12px;
-    color: var(--primary);
+    color: var(--accent-soft);
     font-weight: 700;
   }
 
   /* --- Help details --- */
   .help {
-    background: var(--primary-softer);
-    border: 1px solid var(--primary-soft);
+    background: rgba(6, 182, 212, 0.07);
+    border: 1px solid rgba(6, 182, 212, 0.2);
     border-radius: var(--radius-sm);
-    margin-top: 14px;
+    margin-top: 12px;
     overflow: hidden;
   }
   .help summary {
     cursor: pointer;
-    padding: 12px 16px;
+    padding: 11px 15px;
     font-size: 13px;
     font-weight: 600;
-    color: var(--primary-dark);
+    color: var(--text);
     list-style: none;
     display: flex;
     align-items: center;
@@ -437,27 +476,33 @@
   .help summary::before {
     content: '+';
     width: 20px; height: 20px;
-    background: var(--primary);
-    color: white;
+    background: var(--accent-2);
+    color: #0f0c29;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 14px;
     transition: transform 0.2s;
     flex-shrink: 0;
+    line-height: 1;
   }
   .help[open] summary::before { transform: rotate(45deg); }
   .help-content {
-    padding: 0 16px 16px;
+    padding: 0 15px 14px;
     font-size: 13px;
-    color: var(--text-2);
-    line-height: 1.5;
+    color: var(--text-dim);
+    line-height: 1.55;
   }
-  .help-content p { margin-bottom: 8px; }
+  .help-content p { margin-bottom: 7px; }
   .help-content p:last-child { margin-bottom: 0; }
   .help-content strong { color: var(--text); }
+  .help-content em {
+    font-style: normal;
+    color: var(--accent-2);
+    font-weight: 700;
+  }
 
   /* --- Toggle row --- */
   .toggle-row {
@@ -465,24 +510,24 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 14px 16px;
-    background: var(--surface-alt);
-    border: 1.5px solid var(--border);
+    padding: 13px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1.5px solid var(--glass-border);
     border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: border-color 0.15s;
+    transition: background 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
-  .toggle-row:hover { border-color: var(--border-strong); }
+  .toggle-row:hover { background: rgba(0, 0, 0, 0.3); }
   .toggle-row-label { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .toggle-row-label strong { font-size: 14px; font-weight: 700; color: var(--text); }
-  .toggle-row-label span { font-size: 12px; color: var(--text-2); }
+  .toggle-row-label span { font-size: 12px; color: var(--text-dim); }
 
   .toggle {
     position: relative;
     width: 44px;
     height: 24px;
-    background: var(--border-strong);
+    background: rgba(255, 255, 255, 0.14);
     border-radius: 999px;
     flex-shrink: 0;
     transition: background 0.2s;
@@ -492,12 +537,11 @@
     position: absolute;
     top: 2px; left: 2px;
     width: 20px; height: 20px;
-    background: white;
+    background: #fff;
     border-radius: 50%;
     transition: transform 0.2s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   }
-  .toggle.on { background: var(--primary); }
+  .toggle.on { background: var(--accent); }
   .toggle.on::after { transform: translateX(20px); }
 
   /* --- Logement select --- */
@@ -508,49 +552,51 @@
     justify-content: space-between;
     gap: 12px;
     padding: 12px 16px;
-    background: var(--surface-alt);
-    border: 1.5px solid var(--border);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1.5px solid var(--glass-border);
     border-radius: var(--radius-sm);
     cursor: pointer;
     transition: all 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
-  .select-option:hover { border-color: var(--border-strong); }
+  .select-option:hover { background: rgba(0, 0, 0, 0.3); }
   .select-option.active {
-    background: var(--primary-softer);
-    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(6, 182, 212, 0.12));
+    border-color: var(--accent);
   }
   .select-option .title { font-size: 14px; font-weight: 600; color: var(--text); }
-  .select-option .value { font-size: 13px; color: var(--text-2); font-weight: 600; white-space: nowrap; }
-  .select-option.active .value { color: var(--primary); }
+  .select-option .value { font-size: 13px; color: var(--text-dim); font-weight: 600; white-space: nowrap; }
+  .select-option.active .value { color: var(--accent-soft); }
 
   /* --- Result card --- */
   .result-card {
-    background: linear-gradient(155deg, #ffffff 0%, var(--primary-softer) 100%);
-    border: 1px solid var(--primary-soft);
+    background: linear-gradient(180deg, rgba(124, 58, 237, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+    border: 1px solid rgba(124, 58, 237, 0.28);
     position: sticky;
     top: 20px;
     align-self: start;
   }
   @media (max-width: 960px) {
-    .result-card { position: relative; top: 0; }
+    .result-card {
+      position: relative;
+      top: 0;
+    }
   }
 
   .view-switch {
     display: flex;
     gap: 4px;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.35);
     padding: 4px;
     border-radius: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .view-switch button {
     flex: 1;
     padding: 8px;
     background: transparent;
     border: none;
-    color: var(--text-2);
+    color: var(--text-dim);
     font-size: 12.5px;
     font-weight: 700;
     border-radius: 7px;
@@ -559,15 +605,13 @@
     font-family: inherit;
   }
   .view-switch button.active {
-    background: var(--primary);
+    background: var(--accent);
     color: white;
-    box-shadow: var(--shadow-sm);
   }
 
   .tabs {
     display: flex;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     padding: 4px;
     gap: 4px;
@@ -578,7 +622,7 @@
     padding: 9px;
     background: transparent;
     border: none;
-    color: var(--text-2);
+    color: var(--text-dim);
     font-size: 13px;
     font-weight: 700;
     border-radius: 7px;
@@ -587,8 +631,9 @@
     font-family: inherit;
   }
   .tab.active {
-    background: var(--text);
-    color: white;
+    background: var(--glass-strong);
+    color: var(--text);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
 
   .big-number {
@@ -599,27 +644,30 @@
     flex-wrap: wrap;
   }
   .big-number .amount {
-    font-size: clamp(36px, 8vw, 52px);
+    font-size: clamp(36px, 9vw, 54px);
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1;
-    color: var(--text);
+    background: linear-gradient(135deg, #fff 0%, #c4b5fd 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .big-number .currency { font-size: 22px; font-weight: 700; color: var(--text-2); }
-  .big-number .period { font-size: 15px; color: var(--text-2); font-weight: 600; }
-  .amount.flash { animation: flashPop 0.35s ease-out; }
+  .big-number .currency { font-size: 22px; font-weight: 700; color: var(--text-dim); }
+  .big-number .period { font-size: 15px; color: var(--text-dim); font-weight: 600; }
+  .amount.flash { animation: flashPop 0.4s ease-out; }
   @keyframes flashPop {
     0% { transform: scale(1); }
-    50% { transform: scale(1.04); }
+    50% { transform: scale(1.04); filter: brightness(1.18); }
     100% { transform: scale(1); }
   }
-  .sub-amount { font-size: 13px; color: var(--text-2); font-weight: 500; }
+  .sub-amount { font-size: 13px; color: var(--text-dim); font-weight: 500; }
 
   .breakdown {
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--glass-border);
   }
   .breakdown-row {
     display: flex;
@@ -629,47 +677,63 @@
     font-size: 13.5px;
     gap: 10px;
   }
-  .breakdown-row .label { color: var(--text-2); display: flex; align-items: center; gap: 8px; }
+  .breakdown-row .label {
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
   .breakdown-row .label::before {
     content: '';
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: var(--primary);
+    background: var(--accent);
     flex-shrink: 0;
   }
-  .breakdown-row .value { font-weight: 700; color: var(--text); }
+  .breakdown-row .value {
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+  }
   .breakdown-row.negative .label::before { background: var(--warning); }
   .breakdown-row.negative .value { color: var(--warning); }
   .breakdown-row.total {
-    border-top: 1px dashed var(--border-strong);
+    border-top: 1px solid var(--glass-border);
     margin-top: 8px;
     padding-top: 14px;
     font-size: 15px;
   }
   .breakdown-row.total .label { color: var(--text); font-weight: 700; }
   .breakdown-row.total .label::before { display: none; }
-  .breakdown-row.total .value { color: var(--success); font-size: 17px; font-weight: 800; }
+  .breakdown-row.total .value {
+    color: var(--success);
+    font-size: 17px;
+    font-weight: 800;
+  }
 
   .info-box {
     margin-top: 18px;
     padding: 12px 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: rgba(6, 182, 212, 0.08);
+    border: 1px solid rgba(6, 182, 212, 0.2);
     border-radius: var(--radius-sm);
     font-size: 12px;
-    color: var(--text-2);
+    color: var(--text-dim);
     line-height: 1.55;
   }
   .info-box strong { color: var(--text); }
 
   /* --- Tax info card --- */
   .tax-card {
-    margin-top: clamp(24px, 4vw, 40px);
-    background: var(--surface);
-    border: 1px solid var(--border);
+    margin-top: clamp(22px, 4vw, 40px);
+    background: var(--glass);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     padding: clamp(20px, 3vw, 32px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
   }
   .tax-head {
     display: flex;
@@ -677,29 +741,29 @@
     gap: 14px;
     margin-bottom: 20px;
     padding-bottom: 18px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--glass-border);
   }
   .tax-icon {
     width: 44px; height: 44px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--teal) 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     color: white;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 6px 14px rgba(3, 112, 195, 0.25);
+    box-shadow: 0 8px 18px rgba(124, 58, 237, 0.35);
   }
   .tax-icon svg { width: 22px; height: 22px; }
   .tax-title {
-    font-size: clamp(15px, 2.2vw, 17px);
+    font-size: clamp(15px, 2vw, 17px);
     font-weight: 800;
     color: var(--text);
     letter-spacing: -0.01em;
   }
   .tax-sub {
     font-size: 13px;
-    color: var(--text-2);
+    color: var(--text-dim);
     margin-top: 2px;
   }
 
@@ -707,25 +771,25 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
   @media (max-width: 780px) {
     .tax-grid { grid-template-columns: 1fr; }
   }
 
   .tax-option {
-    background: var(--surface-alt);
-    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     padding: 16px;
   }
   .tax-option p {
     font-size: 13px;
-    color: var(--text-2);
+    color: var(--text-dim);
     line-height: 1.55;
   }
   .tax-option p strong { color: var(--text); }
-  .tax-option p em { color: var(--primary-dark); font-style: normal; font-weight: 700; }
+  .tax-option p em { color: var(--accent-2); font-style: normal; font-weight: 700; }
 
   .tax-option-head {
     display: flex;
@@ -747,38 +811,54 @@
     padding: 3px 8px;
     border-radius: 999px;
   }
-  .tag-primary { background: #d1fae5; color: #047857; }
-  .tag-neutral { background: #fef3c7; color: #92400e; }
-  .tag-couple  { background: #e0e7ff; color: #3730a3; }
+  .tag-primary { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
+  .tag-neutral { background: rgba(245, 158, 11, 0.18); color: #fcd34d; }
+  .tag-couple  { background: rgba(6, 182, 212, 0.18); color: #67e8f9; }
 
   .tax-tip {
     display: flex;
     align-items: flex-start;
     gap: 12px;
     padding: 14px 16px;
-    background: linear-gradient(135deg, var(--primary-softer) 0%, #f0fdfa 100%);
-    border: 1px solid var(--primary-soft);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.14), rgba(6, 182, 212, 0.1));
+    border: 1px solid rgba(124, 58, 237, 0.25);
     border-radius: var(--radius);
     font-size: 13px;
-    color: var(--text-2);
+    color: var(--text-mid);
     line-height: 1.55;
   }
-  .tax-tip-icon { font-size: 20px; flex-shrink: 0; line-height: 1; }
+  .tax-tip-icon {
+    width: 28px; height: 28px;
+    flex-shrink: 0;
+    color: var(--accent-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .tax-tip strong { color: var(--text); }
-  .tax-tip a { color: var(--primary); font-weight: 700; text-decoration: none; border-bottom: 1px dashed var(--primary); }
+  .tax-tip a {
+    color: var(--accent-2);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent-2);
+  }
   .tax-tip a:hover { border-bottom-style: solid; }
 
   footer {
     text-align: center;
-    margin-top: 36px;
-    color: var(--text-2);
+    margin-top: 40px;
+    color: var(--text-dim);
     font-size: 12.5px;
     line-height: 1.7;
   }
-  footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  footer a { color: var(--accent-2); text-decoration: none; font-weight: 600; }
   footer a:hover { text-decoration: underline; }
 
-  /* Reduced motion */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -789,15 +869,19 @@
 </head>
 <body>
 
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
 <div class="container">
   <header>
     <div class="badge">Barèmes officiels 2026 · ISNI / Légifrance</div>
-    <h1>Simulateur <span class="accent">salaire interne</span></h1>
-    <p class="subtitle">Calculez votre rémunération mensuelle en fonction de votre spécialité, votre année d'internat et vos gardes. Tarifs officiels 2026.</p>
+    <h1>Simulateur de salaire<br />interne en médecine</h1>
+    <p class="subtitle">Estimez votre rémunération mensuelle selon votre spécialité, votre année d'internat, vos gardes et astreintes. Tarifs actualisés 2026.</p>
   </header>
 
   <div class="grid">
-    <!-- LEFT: form card -->
+    <!-- LEFT: form -->
     <div class="card">
 
       <!-- Spécialité -->
@@ -823,12 +907,14 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         Gardes du mois
       </div>
-      <p class="hint-top">Comptez simplement <strong>combien de jours vous êtes de garde</strong> ce mois-ci. Le simulateur calcule la rémunération exacte pour chaque type de journée.</p>
+      <p class="hint-top">Comptez simplement <strong>combien de jours vous êtes de garde</strong> ce mois-ci. Le simulateur applique le barème exact pour chaque type de journée.</p>
 
       <div class="garde-cards">
         <div class="garde-card">
           <div class="garde-head">
-            <div class="garde-icon">🌙</div>
+            <div class="garde-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </div>
             <div class="garde-info">
               <div class="garde-title">Nuit en semaine</div>
               <div class="garde-sub">du lundi soir au vendredi soir</div>
@@ -841,13 +927,15 @@
           </div>
           <div class="garde-foot">
             <span class="garde-label">Par nuit</span>
-            <span class="garde-price">234,80 €</span>
+            <span class="garde-price" id="priceNuitSem">—</span>
           </div>
         </div>
 
         <div class="garde-card">
           <div class="garde-head">
-            <div class="garde-icon">🎒</div>
+            <div class="garde-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="16" y1="14" x2="16" y2="18"/></svg>
+            </div>
             <div class="garde-info">
               <div class="garde-title">Samedi</div>
               <div class="garde-sub">après-midi + nuit du samedi</div>
@@ -860,13 +948,15 @@
           </div>
           <div class="garde-foot">
             <span class="garde-label">Par samedi</span>
-            <span class="garde-price">385,29 €</span>
+            <span class="garde-price" id="priceSamedi">—</span>
           </div>
         </div>
 
         <div class="garde-card">
           <div class="garde-head">
-            <div class="garde-icon">🏖️</div>
+            <div class="garde-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="15" r="2.5" fill="currentColor" stroke="none"/></svg>
+            </div>
             <div class="garde-info">
               <div class="garde-title">Dimanche ou jour férié</div>
               <div class="garde-sub">24h complètes (journée + nuit)</div>
@@ -879,7 +969,7 @@
           </div>
           <div class="garde-foot">
             <span class="garde-label">Par journée</span>
-            <span class="garde-price">513,72 €</span>
+            <span class="garde-price" id="priceDimanche">—</span>
           </div>
         </div>
       </div>
@@ -887,9 +977,9 @@
       <details class="help">
         <summary>Comment sont calculés ces tarifs ?</summary>
         <div class="help-content">
-          <p><strong>Nuit de semaine</strong> : 1 garde de nuit × 234,80 € = <em>234,80 €</em>.</p>
-          <p><strong>Samedi</strong> (après-midi + nuit) : 1 demi-garde week-end (128,43 €) + 1 garde de nuit week-end (256,86 €) = <em>385,29 €</em>.</p>
-          <p><strong>Dimanche / férié</strong> (24h) : 2 gardes de week-end (2 × 256,86 €) = <em>513,72 €</em>. Une journée complète compte pour 2 gardes dans les barèmes officiels (matin / après-midi / nuit).</p>
+          <p><strong>Nuit de semaine</strong> — 1 garde de nuit × 234,80 € = <em>234,80 €</em>.</p>
+          <p><strong>Samedi</strong> (après-midi + nuit) — 1 demi-garde week-end (128,43 €) + 1 garde de nuit week-end (256,86 €) = <em>385,29 €</em>.</p>
+          <p><strong>Dimanche / férié</strong> (24h) — 2 gardes de week-end (2 × 256,86 €) = <em>513,72 €</em>. Une journée complète compte pour 2 gardes dans les barèmes officiels (matin / après-midi / nuit).</p>
         </div>
       </details>
 
@@ -942,7 +1032,7 @@
         </div>
       </div>
 
-      <!-- Options -->
+      <!-- Situation -->
       <div class="section-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         Situation
@@ -956,7 +1046,7 @@
         <div class="toggle" id="saspasToggle"></div>
       </div>
 
-      <div class="select-group" style="margin-top: 12px;">
+      <div class="select-group" style="margin-top: 10px;">
         <div class="select-option active" data-logement="rien">
           <span class="title">Ni logé ni nourri</span>
           <span class="value">+84,22€ / mois</span>
@@ -976,7 +1066,7 @@
       </div>
     </div>
 
-    <!-- RIGHT: result card -->
+    <!-- RIGHT: result -->
     <div class="card result-card">
       <div class="section-title" style="margin-top:0;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -1013,7 +1103,7 @@
       </div>
 
       <div class="info-box">
-        <strong>À savoir.</strong> Gardes et astreintes sont imposables et soumises à cotisations. Le net affiché est estimé à partir d'un taux moyen de cotisations salariales de 22 %.
+        <strong>À savoir —</strong> Gardes et astreintes sont imposables et soumises à cotisations. Le net est estimé à partir d'un taux moyen de cotisations salariales de 22 % (varie selon mutuelle, prélèvement à la source, etc.).
       </div>
     </div>
   </div>
@@ -1022,7 +1112,7 @@
   <div class="tax-card">
     <div class="tax-head">
       <div class="tax-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 15h0M12 15h5M7 11h10M7 7h10"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="7" y1="15" x2="11" y2="15"/><line x1="14" y1="15" x2="17" y2="15"/></svg>
       </div>
       <div>
         <div class="tax-title">Prélèvement à la source — quel taux choisir ?</div>
@@ -1036,7 +1126,7 @@
           <span class="tax-tag tag-primary">Recommandé</span>
           <span class="tax-option-title">Taux personnalisé</span>
         </div>
-        <p>Calculé par les impôts selon votre dernière déclaration. C'est le <strong>choix par défaut</strong> et le plus juste la plupart du temps.</p>
+        <p>Calculé par les impôts d'après votre dernière déclaration. C'est le <strong>choix par défaut</strong> et le plus juste la plupart du temps.</p>
       </div>
 
       <div class="tax-option">
@@ -1044,7 +1134,7 @@
           <span class="tax-tag tag-neutral">Si 1<sup>re</sup> année</span>
           <span class="tax-option-title">Taux neutre</span>
         </div>
-        <p>Appliqué automatiquement tant que vous n'avez jamais déclaré. Souvent plus élevé — pensez à switcher sur <em>personnalisé</em> après votre première déclaration.</p>
+        <p>Appliqué automatiquement tant que vous n'avez jamais déclaré. Souvent plus élevé — pensez à basculer sur <em>personnalisé</em> après votre première déclaration.</p>
       </div>
 
       <div class="tax-option">
@@ -1052,14 +1142,16 @@
           <span class="tax-tag tag-couple">Couple</span>
           <span class="tax-option-title">Taux individualisé</span>
         </div>
-        <p>Pour les couples mariés / pacsés. Utile si gros écart de revenus entre conjoints — chacun paie selon ses propres revenus.</p>
+        <p>Pour les couples mariés / pacsés. Utile en cas d'écart important de revenus — chacun paie alors selon ses propres revenus.</p>
       </div>
     </div>
 
     <div class="tax-tip">
-      <div class="tax-tip-icon">💡</div>
+      <div class="tax-tip-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-4 12.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26A7 7 0 0 0 12 2z"/><line x1="10" y1="22" x2="14" y2="22"/></svg>
+      </div>
       <div>
-        <strong>Le bon réflexe.</strong> Les gardes font varier vos revenus d'un mois à l'autre mais sont intégrées à l'assiette du prélèvement. Si vos gardes augmentent fortement, modulez votre taux sur <a href="https://www.impots.gouv.fr" target="_blank" rel="noopener">impots.gouv.fr</a> → « Gérer mon prélèvement à la source » pour éviter un gros rattrapage l'année suivante.
+        <strong>Le bon réflexe.</strong> Les gardes font varier vos revenus d'un mois à l'autre mais sont intégrées à l'assiette du prélèvement. Si vos gardes augmentent fortement, modulez votre taux sur <a href="https://www.impots.gouv.fr" target="_blank" rel="noopener">impots.gouv.fr</a> → « Gérer mon prélèvement à la source » pour éviter un rattrapage important l'année suivante.
       </div>
     </div>
   </div>
@@ -1073,44 +1165,34 @@
 <script>
   // Barèmes 2026 (brut)
   const YEAR_BASE = {
-    1: 1592.80,
-    2: 1765.27,
-    3: 2367.36,
-    4: 2369.20,
-    5: 2370.69,
-    6: 2374.62
+    1: 1592.80, 2: 1765.27, 3: 2367.36,
+    4: 2369.20, 5: 2370.69, 6: 2374.62
   };
 
-  // Prix unitaires des gardes (brut)
   const P = {
-    nuitSem: 234.80,       // Garde nuit semaine (lun-ven)
-    gardeWE: 256.86,       // Garde nuit WE / férié
-    demiSem: 117.40,       // ½ garde semaine
-    demiWE: 128.43,        // ½ garde WE
+    nuitSem: 234.80,
+    gardeWE: 256.86,
+    demiSem: 117.40,
+    demiWE: 128.43
   };
 
-  // Pondération par jour travaillé
   const GARDE_PRICE = {
-    nuitSemaine: P.nuitSem,                    // 234,80€
-    samedi: P.demiWE + P.gardeWE,              // 128,43 + 256,86 = 385,29€ (= 1,5 garde)
-    dimanche: 2 * P.gardeWE,                   // 513,72€ (= 2 gardes)
-    demiSemaine: P.demiSem,                    // 117,40€
-    demiWE: P.demiWE                           // 128,43€
+    nuitSemaine: P.nuitSem,
+    samedi: P.demiWE + P.gardeWE,
+    dimanche: 2 * P.gardeWE,
+    demiSemaine: P.demiSem,
+    demiWE: P.demiWE
   };
 
   const ASTREINTE = {
     simple: 21.26,
-    depl: 21.26 + 78.26   // forfait de base + 1 demi-indemnité de sujétion (≈99,52€)
+    depl: 21.26 + 78.26
   };
 
-  const LOGEMENT = {
-    rien: 84.22, nourri: 56.19, loge: 28.03, tout: 0
-  };
-
+  const LOGEMENT = { rien: 84.22, nourri: 56.19, loge: 28.03, tout: 0 };
   const SASPAS_PRIME = 125;
   const COTIS_RATE = 0.22;
 
-  // Spécialités
   const SPECIALTIES = [
     { key: 'mg', label: 'Médecine générale', group: 'Médecine générale', years: 4, soclEnd: 1, djStart: 4 },
 
@@ -1332,9 +1414,21 @@
     $('rowAutonomie').style.display = r.autonomie ? 'flex' : 'none';
     $('rowSaspas').style.display = r.saspas ? 'flex' : 'none';
     $('rowCotis').style.display = isNet ? 'flex' : 'none';
+
+    // Prix unitaires des gardes (réagissent au toggle brut/net)
+    const adj = (brut) => isNet ? brut * (1 - COTIS_RATE) : brut;
+    const tagLabel = isNet ? 'net' : 'brut';
+    const priceHTML = (v) => `${fmt2(v)} €<span class="tag">${tagLabel}</span>`;
+    ['priceNuitSem', 'priceSamedi', 'priceDimanche'].forEach(id => {
+      const el = $(id);
+      el.classList.toggle('is-brut', !isNet);
+    });
+    $('priceNuitSem').innerHTML = priceHTML(adj(GARDE_PRICE.nuitSemaine));
+    $('priceSamedi').innerHTML  = priceHTML(adj(GARDE_PRICE.samedi));
+    $('priceDimanche').innerHTML = priceHTML(adj(GARDE_PRICE.dimanche));
   }
 
-  // --- Wiring ---
+  // Wiring
   buildSpecialtyOptions();
   $('specialty').addEventListener('change', (e) => {
     state.spec = e.target.value;
